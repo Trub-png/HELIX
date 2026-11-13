@@ -1,0 +1,42 @@
+{
+  "name": "helix-ide",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Helix",
+  "desktopName": "helix",
+  "description": "Helix local development environment",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "package:linux": "electron-builder --linux AppImage --publish never"
+  },
+  "devDependencies": {
+    "electron-builder": "^26.0.12",
+    "electron": "^37.2.6"
+  },
+  "build": {
+    "appId": "local.helix.ide",
+    "productName": "Helix",
+    "directories": {
+      "output": "outputs"
+    },
+    "files": [
+      "index.html",
+      "styles.css",
+      "app.js",
+      "extensions.js",
+      "repair-engine.js",
+      "electron-main.js",
+      "preload.js",
+      "package.json"
+    ],
+    "linux": {
+      "synopsis": "Local development environment",
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
+    }
+  }
+}

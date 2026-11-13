@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Helix — espacio de código</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="activity-bar" aria-label="Navegación principal">
+        <button class="activity active" title="Explorador" data-panel="explorer">⌘</button>
+        <button class="activity" title="Buscar" data-panel="search">⌕</button>
+        <button class="activity" title="Control de código" data-panel="source">⑂</button>
+        <button class="activity" title="Extensiones" data-panel="extensions">▦</button>
+        <span class="activity-spacer"></span>
+        <button class="avatar" title="Perfil">JV</button>
+        <button class="activity" title="Ajustes">⚙</button>
+      </nav>
+
+      <aside class="sidebar">
+        <header class="sidebar-header"><span id="panel-title">EXPLORADOR</span><div class="sidebar-tools"><button class="icon-button open-folder-button" id="open-folder" title="Abrir carpeta" aria-label="Abrir carpeta">⌑<span>Abrir</span></button><button class="icon-button" id="new-file" title="Nuevo archivo" aria-label="Nuevo archivo">＋</button></div></header>
+        <section class="workspace-name"><span class="chevron">⌄</span> <span id="workspace-label">SIN CARPETA ABIERTA</span></section>
+        <section id="search-panel" class="project-starter search-panel" aria-label="Buscar en el proyecto" hidden>
+          <label for="project-search">BUSCAR EN ARCHIVOS</label>
+          <input id="project-search" type="search" placeholder="Texto o expresión…" autocomplete="off" />
+          <div id="search-status" role="status" aria-live="polite">Escribe para buscar en los archivos de texto abiertos.</div>
+          <div id="search-results" class="search-results"></div>
+        </section>
+        <section id="project-starter" class="project-starter" aria-label="Crear proyecto">
+          <label for="template-menu">PLANTILLA</label>
+          <select id="template-menu" aria-label="Elegir plantilla">
+            <option value="">Abre una carpeta para cargar plantillas</option>
+          </select>
+          <small>Elige una base para empezar.</small>
+        </section>
+        <div class="file-actions" aria-label="Acciones de archivos"><button id="new-folder" type="button">＋ Carpeta</button><button id="rename-path" type="button">Renombrar</button><button id="delete-path" type="button">Eliminar</button></div>
+        <div id="file-tree" class="file-tree" aria-label="Archivos del proyecto"></div>
+        <section id="empty-workspace" class="empty-workspace"><span class="empty-icon">⌑</span><strong>Tu espacio de trabajo</strong><p>Abre una carpeta para ver y editar tus archivos.</p><button type="button" id="empty-open-folder">Abrir carpeta</button><small>También puedes empezar con un archivo nuevo.</small></section>
+        <section class="outline"><span class="section-label">ESQUEMA</span><div id="outline-content">Selecciona un archivo para ver su estructura.</div></section>
+      </aside>
+
+      <section class="workbench">
+        <header class="titlebar">
+          <div class="brand"><span class="brand-mark">◈</span> HELIX <span class="beta">LOCAL</span></div>
+          <label class="command"><span>⌘ K</span><input id="command-search" placeholder="Busca un archivo o comando" /></label>
+          <div class="window-actions"><button id="run-project" title="Ejecutar proyecto Node.js" aria-label="Ejecutar proyecto">▶ <span>Ejecutar</span></button><button id="save-file" title="Guardar archivo" aria-label="Guardar archivo">▣ <span>Guardar</span></button></div>
+        </header>
+        <div id="tabs" class="tabs" aria-label="Archivos abiertos"></div>
+        <section class="editor-region">
+          <div class="breadcrumbs" id="breadcrumbs">orbital-app <span>/</span> src <span>/</span> App.tsx</div>
+          <div class="editor-wrap">
+            <div id="line-numbers" class="line-numbers" aria-hidden="true"></div>
+            <div class="code-surface">
+              <pre id="code-view" aria-hidden="true"></pre>
+              <textarea id="editor" spellcheck="false" aria-label="Editor de código"></textarea>
+            </div>
+            <aside class="minimap" aria-label="Minimapa del archivo"><pre id="minimap-content" aria-hidden="true"></pre></aside>
+          </div>
+          <div class="editor-actions">
+            <button class="analysis-button" id="analyze-project"><span>↻</span> Analizar proyecto</button>
+            <button class="ai-fix" id="ai-fix"><span>✦</span> Entrenador</button>
+          </div>
+        </section>
+        <section class="bottom-panel">
+          <div class="panel-tabs"><button class="selected" data-panel-target="problems">PROBLEMAS <span id="problem-count">0</span></button><button id="trainer-tab">✦ ENTRENADOR</button><button data-panel-target="output">SALIDA</button><button>CONSOLA DE DEPURACIÓN</button><button>TERMINAL</button><button class="panel-expand">⌃</button><button id="terminal-run" type="button">▶ Ejecutar</button></div>
+          <div id="problems" class="problems"></div>
+          <div id="trainer" class="trainer" hidden></div>
+          <section class="repair-panel" aria-labelledby="repair-heading">
+            <div class="repair-heading-row"><div><h2 id="repair-heading">Reparación asistida</h2><p>La sesión es temporal: la propuesta se mantiene en esta ventana y no se envía ni se guarda automáticamente.</p></div><button id="repair-once" type="button">Proponer reparación</button></div>
+            <div id="repair-status" class="repair-status" role="status" aria-live="polite">Listo para revisar el archivo abierto. La reparación requiere una acción explícita.</div>
+            <div id="repair-details" class="repair-details" aria-label="Propuesta y evidencia" hidden>
+              <div><strong>Propuesta</strong><p id="repair-proposal">Aún no hay una propuesta.</p></div>
+              <div><strong>Evidencia</strong><p id="repair-evidence">El análisis que sustenta la propuesta aparecerá aquí.</p></div>
+              <div class="repair-actions"><button id="repair-apply" type="button" disabled>Aplicar propuesta</button><button id="repair-discard" type="button" disabled>Descartar</button></div>
+            </div>
+          </section>
+          <div id="output-panel" class="output-panel" hidden>
+            <div class="output-toolbar"><span id="runtime-label">Node.js · salida local</span><span id="terminal-state" class="terminal-state" role="status">Listo para ejecutar</span><a id="local-preview" href="http://localhost:3000" hidden>↗ Abrir localhost</a><button id="git-refresh" type="button" title="Actualizar estado Git">⑂ Git</button></div>
+            <pre id="output-content" aria-live="polite">Abre un proyecto Node.js y pulsa Ejecutar para ver su salida aquí.</pre>
+            <div class="github-notice"><span>GitHub</span><p>Las funciones de cuenta y repositorios privados necesitan que conectes GitHub explícitamente.</p><button id="github-connect" type="button">Conectar GitHub</button></div>
+          </div>
+        </section>
+        <footer class="statusbar"><span class="status-branch" id="workspace-status">Sin carpeta abierta</span><span id="save-status">Sin cambios</span><span>× <b id="error-count">0</b> &nbsp; △ <b id="warning-count">0</b></span><span class="status-right">Ln <b id="line-status">1</b>, Col <b id="col-status">1</b> &nbsp;&nbsp; Spaces: 2 &nbsp;&nbsp; <span id="language-status">Texto</span></span></footer>
+      </section>
+    </main>
+    <script src="extensions.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
